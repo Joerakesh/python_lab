@@ -1,0 +1,6 @@
+# Used by Exercises 03, 11 and 13
+pandas
+# Used by automated notebook execution
+jupyter
+nbconvert
+ipykernel
