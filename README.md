@@ -1,10 +1,14 @@
 <div align="center">
 
+<img src="https://eatright.loyolacollege.edu/_app/immutable/assets/loyola-logo.C2NjGpy4.webp" alt="Loyola College logo" width="130" />
+
 # LOYOLA COLLEGE, CHENNAI
+
 ### Department of Data Science
 
-# Python for Data Science Laboratory
-**I M.Sc. Data Science · I Semester · Academic Year 2026–2027**
+# Python for Data Science - Laboratory
+
+**M.Sc. Data Science · I Semester · Academic Year 2026–2027**
 
 **Practical Record & Code Portfolio**
 
