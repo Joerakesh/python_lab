@@ -1,0 +1,56 @@
+name: Execute Python lab notebooks
+
+on:
+  push:
+    paths:
+      - "ex-*/*.ipynb"
+      - "ex-*/*.py"
+      - "requirements.txt"
+      - ".github/workflows/execute-notebooks.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: python-lab-notebooks
+  cancel-in-progress: true
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Execute all exercise notebooks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p executed-notebooks
+          while IFS= read -r notebook; do
+            exercise="$(basename "$(dirname "$notebook")")"
+            echo "Executing $notebook"
+            jupyter nbconvert --to notebook --execute "$notebook" \
+              --output "${exercise}.ipynb" \
+              --output-dir executed-notebooks \
+              --ExecutePreprocessor.timeout=300
+            echo "- Passed: `$exercise`" >> "$GITHUB_STEP_SUMMARY"
+          done < <(find ex-* -maxdepth 1 -type f -name '*.ipynb' | sort)
+          echo "All exercise notebooks executed successfully."
+      - name: Upload executed notebooks
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: executed-python-lab-notebooks
+          path: executed-notebooks/
+          if-no-files-found: warn
+          retention-days: 14
