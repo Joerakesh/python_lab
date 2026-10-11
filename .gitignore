@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+scores.csv
+scores_clean.json
+model.pkl
